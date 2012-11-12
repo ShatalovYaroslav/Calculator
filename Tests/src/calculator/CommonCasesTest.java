@@ -21,9 +21,9 @@ public class CommonCasesTest {
 
     @Test
     public void onlyNumberTest() throws Exception {
-        final BigDecimal result = calculator.evaluate(" 157 ");
+        final BigDecimal result = calculator.evaluate(" 158 ");
         assertEquals("Number wasn't evaluated correctly.",
-                new BigDecimal(157), result);
+                new BigDecimal(158), result);
     }
 
     @Test
