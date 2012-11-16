@@ -110,7 +110,7 @@ public class EvaluationContext implements FiniteMachineContext<
     public void addOperator(BinaryOperator operator) {
 
         while (!operatorStack.isEmpty() &&
-                operator.compareTo(operatorStack.peek()) < 0) {
+                operator.compareTo(operatorStack.peek()) <= 0) {
             final BinaryOperator binaryOperator =
                     operatorStack.pop();
             applyOperator(binaryOperator);
