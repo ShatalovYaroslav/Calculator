@@ -45,4 +45,13 @@ public class CommonCasesTest {
         }
     }
 
+    @Test
+    public void realNumberTest() throws Exception {
+        final BigDecimal result = calculator.evaluate(" 30.8 ");
+        assertEquals("Negative number wasn't evaluated correctly.",
+                new BigDecimal(30.8), result);
+    }
+
+
+
 }

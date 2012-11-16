@@ -4,13 +4,15 @@ import calculator.EvaluationContext;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.util.Locale;
 
 public class NumberParser extends AbstractParser {
 
     private static final NumberFormat NUMBER_PARSER =
-            new DecimalFormat("0.0");
+            new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.US));
 
     @Override
     public boolean parse(EvaluationContext context) {

@@ -11,6 +11,8 @@ public class BinaryOperatorFactory {
                 put("+", new PlusBinaryOperator(1));
                 put("-", new MinusBinaryOperator(1));
                 put("*", new MultiplyBinaryOperator(2));
+                put("/", new DivideBinaryOperator(2));
+                put("^", new PowerBinaryOperator(2));
             }};
 
     public BinaryOperator create(String operatorRepresentation) {
