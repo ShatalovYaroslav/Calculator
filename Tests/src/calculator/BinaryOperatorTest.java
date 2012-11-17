@@ -79,7 +79,7 @@ public class BinaryOperatorTest {
     @Test
     public void combinationOfBinaryOperationsTest() throws Exception {
         final BigDecimal res = calculator.evaluate("3 + 10 / 5 * 2 -7");
-        assertEquals("Division of numbers isn't calculated correctly",
+        assertEquals("Evaluation with binary operators isn't calculated correctly",
                 new BigDecimal(0), res);
     }
 
