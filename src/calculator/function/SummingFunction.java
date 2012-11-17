@@ -2,7 +2,7 @@ package calculator.function;
 
 import java.math.BigDecimal;
 
-public class SummingFunction extends AbstractFunction{
+public class SummingFunction extends AbstractFunction {
 
     public SummingFunction(Integer minParamNumb, Integer maxParamNumb) {
         super(minParamNumb, maxParamNumb);

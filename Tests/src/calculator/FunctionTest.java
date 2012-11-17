@@ -20,6 +20,20 @@ public class FunctionTest {
     }
 
     @Test
+    public void simpleBracketsTest() throws Exception {
+        final BigDecimal result = calculator.evaluate(" (1) ");
+        assertEquals("summing function wasn't evaluated correctly.",
+                new BigDecimal(3), result);
+    }
+
+    @Test
+    public void sumAndMultiplyTest() throws Exception {
+        final BigDecimal result = calculator.evaluate(" 2 * sum (1, 3) ");
+        assertEquals("summing function wasn't evaluated correctly.",
+                new BigDecimal(3), result);
+    }
+
+    @Test
     public void functionParameterExceptionTest() throws Exception {
 
         try {
@@ -27,7 +41,7 @@ public class FunctionTest {
             fail("Expected exception wasn't thrown.");
         } catch (EvaluationException e) {
             assertEquals("Wrong error position reported.",
-                    7, e.getErrorPosition());
+                    9, e.getErrorPosition());
         }
     }
 

@@ -15,7 +15,7 @@ public class BinaryOperatorTest {
 
     @Test
     public void simpleMultiplicationTest() throws Exception {
-           final BigDecimal res = calculator.evaluate(" 7 * 5 ");
+        final BigDecimal res = calculator.evaluate(" 7 * 5 ");
         assertEquals("Multiplication of numbers isn't calculeted correctly",
                 new BigDecimal(35), res);
     }

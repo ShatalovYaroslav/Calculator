@@ -1,43 +1,33 @@
 package calculator;
 
 import calculator.function.Function;
-import calculator.stateMachine.FiniteMachineContext;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
-public class FunctionContext implements FiniteMachineContext<
-        MachineState, BigDecimal> {
+public class FunctionContext {
 
     private final Function func;
     private List<BigDecimal> params = new ArrayList<BigDecimal>();
-
-    private MachineState state;
+    private final Deque<Integer> parametersStack = new ArrayDeque<Integer>();
 
     public FunctionContext(Function func) {
         this.func = func;
     }
 
-    @Override
-    public MachineState getState() {
-        return state;
-    }
-
-    @Override
-    public void setState(MachineState state) {
-        this.state = state;
-    }
-
-    public void addParams(BigDecimal par){
+    public void addParameterValue(BigDecimal par) {
         params.add(par);
     }
 
-    @Override
+    public Deque<Integer> getParametersStack() {
+        return parametersStack;
+    }
+
     public BigDecimal getResult() {
 
-        BigDecimal res =
-                func.calculate((BigDecimal[]) params.toArray());
-        return res;
+        return func.calculate((BigDecimal[]) params.toArray());
     }
 }

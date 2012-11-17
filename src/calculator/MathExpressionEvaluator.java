@@ -21,7 +21,8 @@ public class MathExpressionEvaluator
         put(NUMBER, new NumberParser());
         put(BINARY_OPERATOR, new BinaryOperatorParser());
         put(FUNCTION_OPENING, new FunctionOpeningParser());
-        put(FUNCTION_PARAM, new FunctionParamParser());
+        put(FUNCTION_SEPARATOR, new FunctionSeparatorParser());
+        put(FUNCTION_CLOSING, new FunctionClosingParser());
         put(FINISH, new EndOfExpressionValidator());
     }};
 

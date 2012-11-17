@@ -21,7 +21,7 @@ abstract public class AbstractFunction
 
         if (params.length > maxParamNumb ||
                 params.length < minParamNumb) {
-            throw  new IllegalArgumentException("Wrong number of function parameters");
+            throw new IllegalArgumentException("Wrong number of function parameters");
         }
     }
 }

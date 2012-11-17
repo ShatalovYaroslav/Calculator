@@ -14,24 +14,29 @@ public class FunctionOpeningParser extends AbstractParser {
         final FunctionFactory factory =
                 context.getFunctionFactory();
 
-        final String remainingPartOfExpression =
-                context.getMathExpression().substring(
-                        context.getCurrentPosition());
-
+        //looking for representation of function
         for (String representation : factory.getFunctionRepresentations()) {
-            if (remainingPartOfExpression.startsWith(representation)) {
+            if (compareRepresentation(context, representation)) {
 
-                context.setCurrentPosition(context.getCurrentPosition() +
-                        representation.length());
+                //case when we have not simple brackets, with function
+                if (!FunctionFactory.getOpenBracket().equals(representation)) {
+                    skipTransparentCharacters(context);
+
+                    if (!compareRepresentation(context,
+                            FunctionFactory.getOpenBracket())) {
+                        return false;
+                    }
+                }
 
                 final Function func =
                         factory.create(representation);
 
-                context.createFunctionContext(func);
+                context.addFunction(func);
 
                 return true;
             }
         }
+
 
         return false;
     }

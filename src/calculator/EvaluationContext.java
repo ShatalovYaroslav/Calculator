@@ -19,37 +19,18 @@ public class EvaluationContext implements FiniteMachineContext<
     private final FunctionFactory functionFactory =
             new FunctionFactory();
 
-    private FunctionContext functionContext;
 
     private final String mathExpression;
     private int currentPosition = 0;
 
     private final Deque<BigDecimal> operandStack = new ArrayDeque<BigDecimal>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<BinaryOperator>();
-    private final Deque<Integer> bracketStack = new ArrayDeque<Integer>();
-
+    //    private final Deque<Integer> parametersStack = new ArrayDeque<Integer>();
+    private final Deque<FunctionContext> functionContextStack = new ArrayDeque<FunctionContext>();
 
     private MachineState state;
 
-    public void createFunctionContext(Function f){
-        functionContext = new FunctionContext(f);
-    }
-
-    public FunctionContext getFunctionContext(){
-        return functionContext;
-    }
-
     public EvaluationContext(String mathExpression) {
-
-
-        // ((((((((((((((((((
-        bracketStack.push(operatorStack.size());
-
-        // ))))))))))))))))))
-        final Integer requiredSize = bracketStack.pop();
-        while (operatorStack.size() != requiredSize) {
-            applyOperator(operatorStack.pop());
-        }
 
         if (mathExpression == null) {
             throw new NullPointerException("Math expression is null.");
@@ -136,5 +117,56 @@ public class EvaluationContext implements FiniteMachineContext<
         }
 
         operatorStack.push(operator);
+    }
+
+    public void addFunction(Function func) {
+
+        FunctionContext functContext = new FunctionContext(func);
+
+        Deque<Integer> parametersStack = functContext.getParametersStack();
+        parametersStack.push(operandStack.size());
+
+        functionContextStack.push(functContext);
+    }
+
+    public void applyParameterOfFunction() {
+
+        if (functionContextStack.isEmpty())
+            throw new IllegalStateException("The separator is used without function");
+        boolean flag = false;
+
+        Deque<Integer> parametersStack = functionContextStack.peek().getParametersStack();
+
+        if (parametersStack.isEmpty())
+            throw new IllegalStateException("The separator is used without parameter");
+
+        final Integer requiredSize = parametersStack.pop();
+        while (operatorStack.size() != requiredSize) {
+            applyOperator(operatorStack.pop());
+            flag = true;
+        }
+
+        if (operandStack.isEmpty())
+            throw new IllegalStateException("Illegal parameter of function");
+
+        if (flag) {
+            final BigDecimal res = operandStack.pop();
+            functionContextStack.peek().addParameterValue(res);
+        }
+    }
+
+    public void applyFunction() {
+
+        FunctionContext funcCont = functionContextStack.pop();
+        Deque<Integer> parametersStack = funcCont.getParametersStack();
+
+        if (parametersStack.size() != 1)
+            throw new IllegalStateException("Illegal number of parameters on closing function, but"
+                    + parametersStack.size());
+
+        applyParameterOfFunction();
+
+        BigDecimal res = funcCont.getResult();
+        operandStack.push(res);
     }
 }
