@@ -11,7 +11,7 @@ public class DivideBinaryOperator extends AbstractBinaryOperator {
     @Override
     public BigDecimal calculate(BigDecimal left, BigDecimal right) {
 
-        checkOperands(left, right);
-        return left.divide(right);
+        checkOperands(left, right); 
+        return left.divide(right); // а тут не надо обрабатывать отдельно деление на ноль?
     }
 }
