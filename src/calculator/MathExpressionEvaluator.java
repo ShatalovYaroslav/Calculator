@@ -20,6 +20,8 @@ public class MathExpressionEvaluator
         put(START, new StartEvaluationValidator());
         put(NUMBER, new NumberParser());
         put(BINARY_OPERATOR, new BinaryOperatorParser());
+        put(FUNCTION_OPENING, new FunctionOpeningParser());
+        put(FUNCTION_PARAM, new FunctionParamParser());
         put(FINISH, new EndOfExpressionValidator());
     }};
 

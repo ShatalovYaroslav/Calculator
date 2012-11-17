@@ -15,9 +15,14 @@ public class MachineTransitionMatrix implements TransitionMatrix<MachineState> {
 
     private static final Map<MachineState, Set<MachineState>>
             TRANSITIONS = new HashMap<MachineState, Set<MachineState>>() {{
-        put(START, of(NUMBER));
+        put(START, of(NUMBER, FUNCTION_OPENING));
+        put (FUNCTION_OPENING, of(FUNCTION_PARAM, FUNCTION_CLOSING));
+        put(FUNCTION_PARAM, of(FUNCTION_SEPARATOR, FUNCTION_CLOSING));
+        put(FUNCTION_SEPARATOR, of(FUNCTION_PARAM));
+        put (FUNCTION_CLOSING, of(BINARY_OPERATOR, FINISH));
+
         put(NUMBER, of(BINARY_OPERATOR, FINISH));
-        put(BINARY_OPERATOR, of(NUMBER));
+        put(BINARY_OPERATOR, of(NUMBER, FUNCTION_OPENING));
         put(FINISH, noneOf(MachineState.class));
     }};
 

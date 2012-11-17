@@ -1,5 +1,7 @@
 package calculator;
 
+import calculator.function.Function;
+import calculator.function.FunctionFactory;
 import calculator.operator.BinaryOperator;
 import calculator.operator.BinaryOperatorFactory;
 import calculator.stateMachine.FiniteMachineContext;
@@ -14,6 +16,11 @@ public class EvaluationContext implements FiniteMachineContext<
     private final BinaryOperatorFactory binaryOperatorFactory =
             new BinaryOperatorFactory();
 
+    private final FunctionFactory functionFactory =
+            new FunctionFactory();
+
+    private FunctionContext functionContext;
+
     private final String mathExpression;
     private int currentPosition = 0;
 
@@ -23,6 +30,14 @@ public class EvaluationContext implements FiniteMachineContext<
 
 
     private MachineState state;
+
+    public void createFunctionContext(Function f){
+        functionContext = new FunctionContext(f);
+    }
+
+    public FunctionContext getFunctionContext(){
+        return functionContext;
+    }
 
     public EvaluationContext(String mathExpression) {
 
@@ -45,6 +60,10 @@ public class EvaluationContext implements FiniteMachineContext<
 
     public BinaryOperatorFactory getBinaryOperatorFactory() {
         return binaryOperatorFactory;
+    }
+
+    public FunctionFactory getFunctionFactory() {
+        return functionFactory;
     }
 
     public void skipWhitespaces() {

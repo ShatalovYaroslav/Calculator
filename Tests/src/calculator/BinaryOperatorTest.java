@@ -62,7 +62,7 @@ public class BinaryOperatorTest {
     }
 
     @Test(expected = ArithmeticException.class)
-    public void divisionByZeroException() throws Exception {
+    public void divisionByZeroExceptionTest() throws Exception {
         calculator.evaluate(" 4 / 0 ");
         fail("Expected exception wasn't thrown.");
     }
