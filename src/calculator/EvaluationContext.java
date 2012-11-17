@@ -25,7 +25,6 @@ public class EvaluationContext implements FiniteMachineContext<
 
     private final Deque<BigDecimal> operandStack = new ArrayDeque<BigDecimal>();
     private final Deque<BinaryOperator> operatorStack = new ArrayDeque<BinaryOperator>();
-    //    private final Deque<Integer> parametersStack = new ArrayDeque<Integer>();
     private final Deque<FunctionContext> functionContextStack = new ArrayDeque<FunctionContext>();
 
     private MachineState state;
