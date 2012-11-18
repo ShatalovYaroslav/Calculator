@@ -96,9 +96,7 @@ public class EvaluationContext implements FiniteMachineContext<
         final BigDecimal right = operandStack.pop();
         final BigDecimal left = operandStack.pop();
 
-        final BigDecimal result =
-                binaryOperator.calculate(left, right);
-
+        BigDecimal result = binaryOperator.calculate(left, right);
         addOperand(result);
     }
 
@@ -108,11 +106,22 @@ public class EvaluationContext implements FiniteMachineContext<
 
     public void addOperator(BinaryOperator operator) {
 
-        while (!operatorStack.isEmpty() &&
-                operator.compareTo(operatorStack.peek()) <= 0) {
-            final BinaryOperator binaryOperator =
-                    operatorStack.pop();
-            applyOperator(binaryOperator);
+        if (!functionContextStack.isEmpty()) {
+            Integer sizeOperators = functionContextStack.peek().getSizeOperatorsForParameters();
+            if (sizeOperators != null) {
+                while (!operatorStack.isEmpty() &&
+                        sizeOperators != operatorStack.size() &&
+                        operator.compareTo(operatorStack.peek()) <= 0) {
+                    final BinaryOperator binaryOperator =
+                            operatorStack.pop();
+                    applyOperator(binaryOperator);
+                }
+            }
+        } else {
+            while (!operatorStack.isEmpty() &&
+                    operator.compareTo(operatorStack.peek()) <= 0) {
+                applyOperator(operatorStack.pop());
+            }
         }
 
         operatorStack.push(operator);
@@ -122,8 +131,8 @@ public class EvaluationContext implements FiniteMachineContext<
 
         FunctionContext functContext = new FunctionContext(func);
 
-        Deque<Integer> parametersStack = functContext.getParametersStack();
-        parametersStack.push(operandStack.size());
+        functContext.setSizeOperatorsForParameters(operatorStack.size());
+        functContext.setSizeOperandsForParameters(operandStack.size());
 
         functionContextStack.push(functContext);
     }
@@ -132,40 +141,38 @@ public class EvaluationContext implements FiniteMachineContext<
 
         if (functionContextStack.isEmpty())
             throw new IllegalStateException("The separator is used without function");
-        boolean flag = false;
 
-        Deque<Integer> parametersStack = functionContextStack.peek().getParametersStack();
+        FunctionContext functionContext = functionContextStack.peek();
+        Integer parametersStack = functionContext.getSizeOperatorsForParameters();
 
-        if (parametersStack.isEmpty())
+        if (parametersStack == null)
             throw new IllegalStateException("The separator is used without parameter");
 
-        final Integer requiredSize = parametersStack.pop();
-        while (operatorStack.size() != requiredSize) {
+        while (operatorStack.size() != parametersStack) {
             applyOperator(operatorStack.pop());
-            flag = true;
         }
 
         if (operandStack.isEmpty())
             throw new IllegalStateException("Illegal parameter of function");
 
-        if (flag) {
-            final BigDecimal res = operandStack.pop();
-            functionContextStack.peek().addParameterValue(res);
-        }
+        final BigDecimal res = operandStack.pop();
+        functionContext.addParameterValue(res);
+
     }
 
     public void applyFunction() {
 
-        FunctionContext funcCont = functionContextStack.pop();
-        Deque<Integer> parametersStack = funcCont.getParametersStack();
+        FunctionContext funcCont = functionContextStack.peek();
+        Integer operandSizeStack = funcCont.getSizeOperandsForParameters();
 
-        if (parametersStack.size() != 1)
-            throw new IllegalStateException("Illegal number of parameters on closing function, but"
-                    + parametersStack.size());
+        if (operandSizeStack == null)
+            throw new IllegalStateException("Illegal number of operands on closing function");
 
-        applyParameterOfFunction();
+        if (operandSizeStack != operandStack.size())
+            applyParameterOfFunction();
 
         BigDecimal res = funcCont.getResult();
+        functionContextStack.pop();
         operandStack.push(res);
     }
 }

@@ -16,6 +16,7 @@ public class FunctionOpeningParser extends AbstractParser {
 
         //looking for representation of function
         for (String representation : factory.getFunctionRepresentations()) {
+
             if (compareRepresentation(context, representation)) {
 
                 //case when we have not simple brackets, with function

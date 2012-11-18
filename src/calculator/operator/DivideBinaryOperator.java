@@ -12,6 +12,9 @@ public class DivideBinaryOperator extends AbstractBinaryOperator {
     public BigDecimal calculate(BigDecimal left, BigDecimal right) {
 
         checkOperands(left, right);
+        if (BigDecimal.ZERO == right) {
+            throw new IllegalArgumentException("Divide by zero");
+        }
         return left.divide(right);
     }
 }
