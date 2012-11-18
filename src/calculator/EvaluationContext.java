@@ -143,12 +143,12 @@ public class EvaluationContext implements FiniteMachineContext<
             throw new IllegalStateException("The separator is used without function");
 
         FunctionContext functionContext = functionContextStack.peek();
-        Integer parametersStack = functionContext.getSizeOperatorsForParameters();
+        Integer sizeStackOperators = functionContext.getSizeOperatorsForParameters();
 
-        if (parametersStack == null)
+        if (sizeStackOperators == null)
             throw new IllegalStateException("The separator is used without parameter");
 
-        while (operatorStack.size() != parametersStack) {
+        while (operatorStack.size() != sizeStackOperators) {
             applyOperator(operatorStack.pop());
         }
 

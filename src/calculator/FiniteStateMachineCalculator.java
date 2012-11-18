@@ -22,7 +22,14 @@ public class FiniteStateMachineCalculator
 
     @Override
     public BigDecimal evaluate(String mathExpression) throws EvaluationException {
-        return run(new EvaluationContext(mathExpression));
+
+        EvaluationContext context = new EvaluationContext(mathExpression);
+        try{
+            return run(context);
+        }catch (Exception ex){
+            throw new EvaluationException(ex.getMessage(),
+                    context.getCurrentPosition());
+        }
     }
 
     @Override

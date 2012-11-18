@@ -73,7 +73,7 @@ public class FunctionTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = EvaluationException.class)
     public void wrongNumberParametersExceptionTest() throws Exception {
         calculator.evaluate(" sum(1) ");
         fail("Expected exception wasn't thrown.");

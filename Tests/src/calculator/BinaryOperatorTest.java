@@ -61,7 +61,7 @@ public class BinaryOperatorTest {
                 new BigDecimal(2), res);
     }
 
-    @Test(expected = ArithmeticException.class)
+    @Test(expected = EvaluationException.class)
     public void divisionByZeroExceptionTest() throws Exception {
         calculator.evaluate(" 4 / 0 ");
         fail("Expected exception wasn't thrown.");
