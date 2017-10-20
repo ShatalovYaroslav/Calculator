@@ -9,6 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="API" exported="" />
     <orderEntry type="module" module-name="FiniteStateMachine" />
-  </component>
+  </component> //comment
 </module>
 
